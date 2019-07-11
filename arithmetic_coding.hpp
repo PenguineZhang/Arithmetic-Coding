@@ -9,14 +9,15 @@
 
 class arithmetic_coding{
 	public:
-		int i;
-		arithmetic_coding(int j):i(j){};
-		~arithmetic_coding(){};
-		
-		// std::vector<float, float> coded_bounds;
-		// std::map<char, float> distribution;
+		arithmetic_coding(std::string text);
+		~arithmetic_coding();
 
-		int square();
+		std::map<char, float> symbols_prob;
+		
+	private:
+		std::string symbols;
+		void calculate_distribution();
+
 };
 
 #endif
