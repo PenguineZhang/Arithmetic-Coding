@@ -5,16 +5,15 @@
 
 int main(int argc, char** argv){
 
-	clock_t start, end;
-	start = clock();
-	
-	arithmetic_coding ac("abcabcedfefegoigpo3eg");
+	std::map<char, float> symbol_prob;
+	symbol_prob.insert(std::pair<char, float>('a', 0.8));
+	symbol_prob.insert(std::pair<char, float>('b', 0.2));
 
-	for (auto& t: ac.symbols_prob){
-		std::cout << t.first << ": " << t.second << std::endl;
-	}
-	end = clock();
+	std::string text("aaba");
 
-	std::cout << float(end - start) / float(CLOCKS_PER_SEC) << std::endl;
+	arithmetic_coding ac(text, symbol_prob);
+	ac.print_info();
+
+
 	return 0;
 }

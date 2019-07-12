@@ -9,14 +9,20 @@
 
 class arithmetic_coding{
 	public:
-		arithmetic_coding(std::string text);
+		arithmetic_coding(std::string text, std::map<char, float> symbols_prob);
 		~arithmetic_coding();
 
-		std::map<char, float> symbols_prob;
 		
+		std::pair<float, float> get_encoded_interval();
+		void print_info();
+		void encode();
+		void decode();
+
 	private:
-		std::string symbols;
-		void calculate_distribution();
+		std::string _symbols;
+		std::map<char, float> _symbols_prob;
+		std::pair<float, float> _encoded_interval;
+		// void calculate_distribution();
 
 };
 
