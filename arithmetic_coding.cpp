@@ -22,10 +22,10 @@ arithmetic_coding::~arithmetic_coding(){}
 // }
 
 void arithmetic_coding::print_info(){
-	std::cout << "text to encode: " << _symbols << std::endl;
+	std::cout << "text to encode: " << "\033[1;31m" << _symbols << "\033[0m" << std::endl;
 	std::cout << "Symbol probabilities: " << std::endl;
 	for (auto& i : _symbols_prob){
-		std::cout << i.first << ": " << i.second << std::endl;
+		std::cout << "\033[1;31m" << i.first << ": " << i.second << "\033[0m" << std::endl;
 	}
 }
 
