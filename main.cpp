@@ -13,6 +13,7 @@ int main(int argc, char** argv){
 
 	arithmetic_coding ac(text, symbol_prob);
 	ac.print_info();
+	ac.encode();
 
 
 	return 0;

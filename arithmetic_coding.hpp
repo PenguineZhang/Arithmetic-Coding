@@ -17,7 +17,7 @@ class arithmetic_coding{
 
 	private:
 		std::string _symbols;
-		std::map<char, string> codeword;
+		std::map<char, std::string> codeword;
 		std::map<char, std::vector<float> > _symbols_prob;
 		std::pair<float, float> _encoded_interval;
 
