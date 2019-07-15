@@ -6,13 +6,14 @@
 int main(int argc, char** argv){
 
 	std::map<char, float> symbol_prob;
-	symbol_prob.insert(std::pair<char, float>('a', 0.8));
-	symbol_prob.insert(std::pair<char, float>('b', 0.2));
+	symbol_prob.insert(std::pair<char, float>('0', 0.2));
+	symbol_prob.insert(std::pair<char, float>('1', 0.4));
+	symbol_prob.insert(std::pair<char, float>('2', 0.4));
 
-	std::string text("aaba");
+	std::string text("210");
 
 	arithmetic_coding ac(text, symbol_prob);
-	// ac.print_info();
+	ac.print_info();
 	ac.encode();
 	ac.print_info();
 

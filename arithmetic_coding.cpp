@@ -1,9 +1,6 @@
 #include <arithmetic_coding.hpp>
 #include <algorithm>
 #include <cassert>
-#include <cmath>
-#include <chrono>
-#include <thread>
 
 arithmetic_coding::arithmetic_coding(std::string text, std::map<char, float> symbols_prob):_symbols(text){
 	float current_cdf = 0.0;
@@ -29,6 +26,15 @@ void arithmetic_coding::print_info(){
 		std::cout << std::endl;
 	}
 	std::cout << "Encoded interval: (" << _encoded_interval.first << ", " << _encoded_interval.second << ")\033[0m" << std::endl;
+	if(codeword.begin() == codeword.end()){
+		std::cout<< "\033[1;31m" << "Codeword has not been generated" << "\033[0m" << std::endl;
+	}else{
+		std::cout << "Codeword: " << "\033[1;32m";
+		for( auto& i: codeword){
+			std::cout << i; 
+		}
+		std::cout << "\033[0m" << std::endl;
+	}
 }
 
 void arithmetic_coding::encode(){
@@ -69,28 +75,26 @@ void arithmetic_coding::binary_search(){
 		mid = (upper + lower) / 2;
 		if (mid < _encoded_interval.first){
 			lower = mid;
-			std::cout << "1" << std::endl;
+			codeword.push_back('1');
 		}else if (mid > _encoded_interval.second){
-			upper = mid;
-			std::cout << "0" << std::endl;
-		}else if (lower < _encoded_interval.first && mid < _encoded_interval.second && !found_upper){
-			std::cout << "Found upper bound" << std::endl;
-			upper = mid;
-			found_upper = true;
-		}else if (mid > _encoded_interval.first && upper > _encoded_interval.second && !found_lower){
-			std::cout << "Found lower bound" << std::endl;
-			lower = mid;
-			found_lower = true;
+			upper = mid;			
+			codeword.push_back('0');
+		}else if (mid > _encoded_interval.first && mid < _encoded_interval.second){
+			if ((mid - _encoded_interval.first) > (_encoded_interval.second - mid)){
+				upper = mid;
+				codeword.push_back('0');
+			}else{
+				lower = mid;
+				codeword.push_back('1');
+			}
 		}
 
 		if (lower > _encoded_interval.first && upper < _encoded_interval.second){
 			std::cout << "Finish encoding" << std::endl;
 			break;
 		}
-		std::cout << lower << " " << upper << std::endl;
+		// std::cout << lower << " " << upper << std::endl;
 		
-		
-		std::this_thread::sleep_for (std::chrono::seconds(1));
 	}
 	
 }
