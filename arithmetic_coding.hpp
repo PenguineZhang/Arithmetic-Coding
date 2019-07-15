@@ -21,7 +21,7 @@ class arithmetic_coding{
 		std::map<char, std::vector<float> > _symbols_prob;
 		std::pair<float, float> _encoded_interval;
 
-		void binary_search();
+		void generate_codeword();
 
 };
 

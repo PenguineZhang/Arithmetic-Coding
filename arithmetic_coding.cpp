@@ -62,15 +62,12 @@ void arithmetic_coding::encode(){
 
 
 	// generating codeword
-	std::cout << _encoded_interval.first << " " << _encoded_interval.second << std::endl;
-	binary_search();
+	generate_codeword();
 
 }
 
-void arithmetic_coding::binary_search(){
-	float upper = 1.0, lower = 0.0;
-	float mid;
-	bool found_upper = false, found_lower=false;
+void arithmetic_coding::generate_codeword(){
+	float upper = 1.0, lower = 0.0, mid;
 	while(1){
 		mid = (upper + lower) / 2;
 		if (mid < _encoded_interval.first){
