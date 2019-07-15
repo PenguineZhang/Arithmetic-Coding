@@ -1,6 +1,9 @@
 #include <arithmetic_coding.hpp>
 #include <algorithm>
 #include <cassert>
+#include <cmath>
+#include <chrono>
+#include <thread>
 
 arithmetic_coding::arithmetic_coding(std::string text, std::map<char, float> symbols_prob):_symbols(text){
 	float current_cdf = 0.0;
@@ -29,6 +32,8 @@ void arithmetic_coding::print_info(){
 }
 
 void arithmetic_coding::encode(){
+	
+	// calculate 
 	float symbols_lower, symbols_upper, selected_interval, new_start;
 	for ( auto& letter: _symbols ){
 
@@ -45,13 +50,51 @@ void arithmetic_coding::encode(){
 		}
 	}
 	std::map<char, std::vector<float>>::iterator it_begin = _symbols_prob.begin();
-	std::map<char, std::vector<float>>::iterator it_end = _symbols_prob.rbegin();
-	std::cout << it_begin->first << std::endl;
-	std::cout << it_end->first << std::endl;
+	std::map<char, std::vector<float>>::iterator it_end = _symbols_prob.end();
 	_encoded_interval.first = _symbols_prob[it_begin->first][1];
-	_encoded_interval.second = _symbols_prob[it_end->first][2];
+	_encoded_interval.second = _symbols_prob[(--it_end)->first][2];
+
+
+	// generating codeword
+	std::cout << _encoded_interval.first << " " << _encoded_interval.second << std::endl;
+	binary_search();
 
 }
+
+void arithmetic_coding::binary_search(){
+	float upper = 1.0, lower = 0.0;
+	float mid;
+	bool found_upper = false, found_lower=false;
+	while(1){
+		mid = (upper + lower) / 2;
+		if (mid < _encoded_interval.first){
+			lower = mid;
+			std::cout << "1" << std::endl;
+		}else if (mid > _encoded_interval.second){
+			upper = mid;
+			std::cout << "0" << std::endl;
+		}else if (lower < _encoded_interval.first && mid < _encoded_interval.second && !found_upper){
+			std::cout << "Found upper bound" << std::endl;
+			upper = mid;
+			found_upper = true;
+		}else if (mid > _encoded_interval.first && upper > _encoded_interval.second && !found_lower){
+			std::cout << "Found lower bound" << std::endl;
+			lower = mid;
+			found_lower = true;
+		}
+
+		if (lower > _encoded_interval.first && upper < _encoded_interval.second){
+			std::cout << "Finish encoding" << std::endl;
+			break;
+		}
+		std::cout << lower << " " << upper << std::endl;
+		
+		
+		std::this_thread::sleep_for (std::chrono::seconds(1));
+	}
+	
+}
+
 
 void arithmetic_coding::decode(){
 
